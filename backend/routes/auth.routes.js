@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 const authMiddleware = require("../middleware/auth.middleware");
+const adminOnly = require("../middleware/role.middleware");
 
 // Test route
 router.get("/test", (req, res) => {
@@ -82,6 +83,22 @@ router.get("/profile", authMiddleware, (req, res) => {
   res.json({
     message: "Access granted to protected route",
     user: req.user,
+  });
+});
+
+// Admin-only route
+router.get("/admin/dashboard", authMiddleware, adminOnly, (req, res) => {
+  res.json({
+    message: "Welcome Admin",
+    admin: req.user,
+  });
+});
+
+// Student route
+router.get("/student/dashboard", authMiddleware, (req, res) => {
+  res.json({
+    message: "Welcome Student",
+    student: req.user,
   });
 });
 
