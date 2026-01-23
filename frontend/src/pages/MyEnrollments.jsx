@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 
-function StudentDashboard() {
+function MyEnrollments() {
   const [enrollments, setEnrollments] = useState([]);
-  const [name, setName] = useState("");
 
   useEffect(() => {
-    const fetchDashboardData = async () => {
+    const fetchEnrollments = async () => {
       try {
         const token = localStorage.getItem("token");
 
@@ -21,35 +20,18 @@ function StudentDashboard() {
         const data = await response.json();
         setEnrollments(data);
       } catch (error) {
-        console.error("Failed to load dashboard data");
+        console.error("Failed to fetch enrollments");
       }
     };
 
-    // optional: name if stored earlier
-    const storedName = localStorage.getItem("name");
-    if (storedName) {
-      setName(storedName);
-    }
-
-    fetchDashboardData();
+    fetchEnrollments();
   }, []);
 
   return (
     <div>
-      <h1>Student Dashboard</h1>
+      <h2>My Enrolled Skill Paths</h2>
 
-      {name && <h3>Welcome, {name} 👋</h3>}
-
-      <p>
-        <strong>Total Enrolled Skill Paths:</strong>{" "}
-        {enrollments.length}
-      </p>
-
-      <h3>My Skill Paths</h3>
-
-      {enrollments.length === 0 && (
-        <p>You are not enrolled in any skill paths yet.</p>
-      )}
+      {enrollments.length === 0 && <p>No enrollments yet</p>}
 
       <ul>
         {enrollments.map((item) => (
@@ -64,4 +46,4 @@ function StudentDashboard() {
   );
 }
 
-export default StudentDashboard;
+export default MyEnrollments;

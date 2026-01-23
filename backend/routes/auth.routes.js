@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken");
 const authMiddleware = require("../middleware/auth.middleware");
 const adminOnly = require("../middleware/role.middleware");
 
+
+
 // Test route
 router.get("/test", (req, res) => {
   res.json({ message: "Auth route working" });
