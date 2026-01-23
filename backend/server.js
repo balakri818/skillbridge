@@ -5,6 +5,7 @@ require("dotenv").config();
 
 const authRoutes = require("./routes/auth.routes");
 const skillRoutes = require("./routes/skill.routes");
+const skillPathRoutes = require("./routes/skillPath.routes"); // Added this
 const enrollmentRoutes = require("./routes/enrollment.routes");
 const adminRoutes = require("./routes/admin.routes");
 
@@ -17,6 +18,7 @@ app.use(express.json());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/skills", skillRoutes);
+app.use("/api/skill-paths", skillPathRoutes); // Added this
 app.use("/api/enrollments", enrollmentRoutes);
 app.use("/api/admin", adminRoutes);
 

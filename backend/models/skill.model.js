@@ -10,6 +10,19 @@ const skillSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    // Added to match Abstract: "Watch, Read, Practice, Test"
+    videoUrl: {
+      type: String, 
+      default: "" // For "Watch"
+    },
+    readingMaterial: {
+      type: String,
+      default: "" // For "Read"
+    },
+    practiceAssignment: {
+      type: String,
+      default: "" // For "Practice"
+    },
     createdBy: {
       type: String,
       default: "admin",
