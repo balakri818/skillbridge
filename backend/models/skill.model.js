@@ -10,19 +10,15 @@ const skillSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    // Added to match Abstract: "Watch, Read, Practice, Test"
-    videoUrl: {
-      type: String, 
-      default: "" // For "Watch"
-    },
-    readingMaterial: {
-      type: String,
-      default: "" // For "Read"
-    },
-    practiceAssignment: {
-      type: String,
-      default: "" // For "Practice"
-    },
+    // Resource Links (Video Removed)
+    readingMaterial: { type: String, default: "" }, // "Read"
+    practiceAssignment: { type: String, default: "" }, // "Practice"
+    
+    // Quiz Module (Test)
+    quizQuestion: { type: String, default: "" },
+    quizOptions: [{ type: String }], 
+    correctAnswer: { type: String, default: "" }, 
+
     createdBy: {
       type: String,
       default: "admin",

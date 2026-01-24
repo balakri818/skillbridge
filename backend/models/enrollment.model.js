@@ -12,9 +12,17 @@ const enrollmentSchema = new mongoose.Schema(
       ref: "SkillPath",
       required: true,
     },
+    // CHANGED: We now track WHICH skills are done
+    completedSkills: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Skill",
+      },
+    ],
+    // We still keep this for easy dashboard display
     progress: {
       type: Number,
-      default: 0, // percentage
+      default: 0, 
     },
     enrolledAt: {
       type: Date,

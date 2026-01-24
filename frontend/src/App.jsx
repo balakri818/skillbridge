@@ -9,6 +9,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Skills from "./pages/Skills";
 import AddSkill from "./pages/AddSkill";
 import MyEnrollments from "./pages/MyEnrollments";
+import CoursePlayer from "./pages/CoursePlayer";
+import CreateSkillPath from "./pages/CreateSkillPath"; // <--- IMPORTED HERE
 
 function App() {
   return (
@@ -20,6 +22,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
+        {/* STUDENT ROUTES */}
         <Route
           path="/student"
           element={
@@ -28,21 +31,37 @@ function App() {
             </ProtectedRoute>
           }
         />
-
-        <Route
-          path="/admin"
-          element={
-            <ProtectedRoute role="admin">
-              <AdminDashboard />
-            </ProtectedRoute>
-          }
-        />
-
         <Route
           path="/skills"
           element={
             <ProtectedRoute>
               <Skills />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-enrollments"
+          element={
+            <ProtectedRoute role="student">
+              <MyEnrollments />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/course/:id"
+          element={
+            <ProtectedRoute role="student">
+              <CoursePlayer />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ADMIN ROUTES */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute role="admin">
+              <AdminDashboard />
             </ProtectedRoute>
           }
         />
@@ -54,14 +73,15 @@ function App() {
             </ProtectedRoute>
           }
         />
-          <Route
-  path="/my-enrollments"
-  element={
-    <ProtectedRoute role="student">
-      <MyEnrollments />
-    </ProtectedRoute>
-  }
-/>
+        {/* 👇 THIS IS THE MISSING ROUTE 👇 */}
+        <Route
+          path="/admin/create-path"
+          element={
+            <ProtectedRoute role="admin">
+              <CreateSkillPath />
+            </ProtectedRoute>
+          }
+        />
 
       </Routes>
     </BrowserRouter>

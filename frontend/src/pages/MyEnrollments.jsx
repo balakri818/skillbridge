@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import config from "../config";
 
 function MyEnrollments() {
   const [enrollments, setEnrollments] = useState([]);
@@ -9,7 +10,7 @@ function MyEnrollments() {
         const token = localStorage.getItem("token");
 
         const response = await fetch(
-          "http://localhost:5000/api/enrollments/my",
+          "https://skillbridge-backend.onrender.com/api/enrollments/my",
           {
             headers: {
               Authorization: `Bearer ${token}`,

@@ -6,38 +6,30 @@ function Home() {
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-blue-700 to-indigo-900 text-white overflow-hidden">
         <div className="absolute inset-0 bg-black opacity-10"></div>
-        <div className="relative max-w-7xl mx-auto px-6 py-32 flex flex-col items-center text-center">
+        
+        {/* UPDATED: Changed py-32 to pt-32 pb-64 to push text up above the wave */}
+        <div className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-64 flex flex-col items-center text-center">
+          
           <span className="bg-blue-600 bg-opacity-30 text-blue-100 text-sm font-semibold px-4 py-1 rounded-full mb-6 border border-blue-400">
             🚀 The Future of Learning is Here
           </span>
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-tight mb-6">
+          
+          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-tight mb-6 drop-shadow-md">
             Master Your Skills with <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-cyan-300">
               SkillBridge
             </span>
           </h1>
-          <p className="text-lg md:text-xl text-blue-100 max-w-2xl mb-10 leading-relaxed">
+          
+          <p className="text-lg md:text-xl text-white/90 max-w-2xl mb-10 leading-relaxed font-medium">
             A structured, data-driven platform designed for CSE students to track progress, 
             master algorithms, and achieve academic excellence.
           </p>
-          <div className="flex gap-4 flex-col sm:flex-row">
-            <Link
-              to="/register"
-              className="px-8 py-4 bg-white text-blue-700 font-bold rounded-full shadow-lg hover:shadow-2xl hover:bg-gray-100 transform hover:-translate-y-1 transition-all duration-300"
-            >
-              Get Started for Free
-            </Link>
-            <Link
-              to="/login"
-              className="px-8 py-4 bg-transparent border-2 border-blue-300 text-white font-bold rounded-full hover:bg-blue-800 transition-all duration-300"
-            >
-              Log In
-            </Link>
-          </div>
+          
         </div>
         
         {/* Decorative Curve */}
-        <div className="absolute bottom-0 w-full overflow-hidden leading-none">
+        <div className="absolute bottom-0 w-full overflow-hidden leading-none z-0">
           <svg className="relative block w-full h-24 md:h-48" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
             <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" className="fill-gray-50"></path>
           </svg>
@@ -54,7 +46,7 @@ function Home() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
             { title: "Structured Paths", icon: "🗺️", desc: "Follow a proven roadmap: Watch, Read, Practice, Test." },
-            { title: "Progress Analytics", icon: "pV", desc: "Visual charts and graphs to track your daily improvements." },
+            { title: "Progress Analytics", icon: "📊", desc: "Visual charts and graphs to track your daily improvements." },
             { title: "Expert Content", icon: "🎓", desc: "Curated resources specifically for CSE subjects like DSA & DBMS." },
           ].map((feature, idx) => (
             <div key={idx} className="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 border border-gray-100 group">

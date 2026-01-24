@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import config from "../config";
 
 function StudentDashboard() {
   const [enrollments, setEnrollments] = useState([]);
@@ -10,7 +12,7 @@ function StudentDashboard() {
         const token = localStorage.getItem("token");
 
         const response = await fetch(
-          "http://localhost:5000/api/enrollments/my",
+          "https://skillbridge-backend.onrender.com/api/enrollments/my",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -43,16 +45,16 @@ function StudentDashboard() {
 
         {/* Stats */}
         <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white p-6 rounded-xl shadow">
-            <p className="text-gray-500">Enrolled Skill Paths</p>
-            <p className="text-3xl font-bold mt-2">
+          <div className="bg-white p-6 rounded-xl shadow border border-gray-100">
+            <p className="text-gray-500 font-medium">Enrolled Skill Paths</p>
+            <p className="text-3xl font-bold mt-2 text-blue-600">
               {enrollments.length}
             </p>
           </div>
 
-          <div className="bg-white p-6 rounded-xl shadow">
-            <p className="text-gray-500">Average Progress</p>
-            <p className="text-3xl font-bold mt-2">
+          <div className="bg-white p-6 rounded-xl shadow border border-gray-100">
+            <p className="text-gray-500 font-medium">Average Progress</p>
+            <p className="text-3xl font-bold mt-2 text-green-600">
               {enrollments.length === 0
                 ? "0%"
                 : `${Math.round(
@@ -64,42 +66,60 @@ function StudentDashboard() {
             </p>
           </div>
 
-          <div className="bg-white p-6 rounded-xl shadow">
-            <p className="text-gray-500">Account Type</p>
-            <p className="text-3xl font-bold mt-2">Student</p>
+          <div className="bg-white p-6 rounded-xl shadow border border-gray-100">
+            <p className="text-gray-500 font-medium">Account Type</p>
+            <p className="text-3xl font-bold mt-2 text-purple-600">Student</p>
           </div>
         </div>
 
         {/* Enrollments */}
         <div className="mt-12">
-          <h2 className="text-2xl font-semibold text-gray-900">
-            My Skill Paths
+          <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+            My Learning Paths
           </h2>
 
           {enrollments.length === 0 ? (
-            <p className="mt-4 text-gray-600">
-              You haven’t enrolled in any skill paths yet.
-            </p>
+            <div className="bg-white p-8 rounded-xl shadow-sm text-center border border-dashed border-gray-300">
+              <p className="text-gray-500 text-lg">
+                You haven’t enrolled in any skill paths yet.
+              </p>
+              <Link 
+                to="/skills" 
+                className="inline-block mt-4 text-blue-600 font-semibold hover:underline"
+              >
+                Browse Available Courses &rarr;
+              </Link>
+            </div>
           ) : (
-            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {enrollments.map((item) => (
                 <div
                   key={item._id}
-                  className="bg-white p-6 rounded-xl shadow hover:shadow-md transition"
+                  className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition border border-gray-100 flex flex-col justify-between h-full"
                 >
-                  <h3 className="text-lg font-semibold text-gray-800">
-                    {item.skillPath.title}
-                  </h3>
-                  <p className="text-gray-600 mt-2">
-                    Progress: {item.progress}%
-                  </p>
-
-                  <div className="mt-4 h-2 bg-gray-200 rounded-full">
-                    <div
-                      className="h-2 bg-blue-600 rounded-full"
-                      style={{ width: `${item.progress}%` }}
-                    ></div>
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-800 mb-4">
+                      {item.skillPath.title}
+                    </h3>
+                    
+                    <div className="flex justify-between text-xs text-gray-500 mb-1">
+                      <span>Progress</span>
+                      <span>{item.progress}%</span>
+                    </div>
+                    <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-blue-600 rounded-full transition-all duration-500"
+                        style={{ width: `${item.progress}%` }}
+                      ></div>
+                    </div>
                   </div>
+
+                  <Link
+                    to={`/course/${item._id}`}
+                    className="mt-6 block w-full text-center bg-blue-50 text-blue-700 font-bold py-2.5 rounded-lg hover:bg-blue-100 transition"
+                  >
+                    {item.progress > 0 ? "Continue Learning" : "Start Course"}
+                  </Link>
                 </div>
               ))}
             </div>
