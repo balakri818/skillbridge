@@ -33,7 +33,7 @@ function AddSkill() {
         correctAnswer: formData.correctAnswer
       };
 
-      const response = await fetch("https://skillbridge-backend.onrender.com/api/skills", {
+      const response = await fetch("http://localhost:5000/api/skills", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

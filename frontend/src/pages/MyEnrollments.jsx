@@ -10,7 +10,7 @@ function MyEnrollments() {
         const token = localStorage.getItem("token");
 
         const response = await fetch(
-          "https://skillbridge-backend.onrender.com/api/enrollments/my",
+          "http://localhost:5000/api/enrollments/my",
           {
             headers: {
               Authorization: `Bearer ${token}`,

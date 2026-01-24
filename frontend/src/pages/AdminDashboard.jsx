@@ -14,7 +14,7 @@ function AdminDashboard() {
     const fetchStats = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("https://skillbridge-backend.onrender.com/api/admin/stats", {
+        const response = await fetch("http://localhost:5000/api/admin/stats", {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await response.json();

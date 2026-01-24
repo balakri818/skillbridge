@@ -10,7 +10,7 @@ function Skills() {
       try {
         const token = localStorage.getItem("token");
         // 👇 CHANGED: Now fetching "skill-paths" (Courses) instead of "skills"
-        const response = await fetch("https://skillbridge-backend.onrender.com/api/skill-paths", {
+        const response = await fetch("http://localhost:5000/api/skill-paths", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

@@ -17,7 +17,7 @@ function CoursePlayer() {
     const fetchCourse = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch(`https://skillbridge-backend.onrender.com/api/enrollments/${id}`, {
+        const res = await fetch(`http://localhost:5000/api/enrollments/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -50,7 +50,7 @@ function CoursePlayer() {
   const toggleComplete = async (skillId) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`https://skillbridge-backend.onrender.com/api/enrollments/${id}/toggle-complete`, {
+      const res = await fetch(`http://localhost:5000/api/enrollments/${id}/toggle-complete`, {
         method: "PUT",
         headers: { 
           "Content-Type": "application/json",

@@ -14,7 +14,7 @@ function CreateSkillPath() {
     const fetchSkills = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch("https://skillbridge-backend.onrender.com/api/skills", {
+        const res = await fetch("http://localhost:5000/api/skills", {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
