@@ -1,30 +1,18 @@
 const mongoose = require("mongoose");
 
-const skillSchema = new mongoose.Schema(
-  {
-    title: {
-      type: String,
-      required: true,
-    },
-    description: {
-      type: String,
-      required: true,
-    },
-    // Resource Links (Video Removed)
-    readingMaterial: { type: String, default: "" }, // "Read"
-    practiceAssignment: { type: String, default: "" }, // "Practice"
-    
-    // Quiz Module (Test)
-    quizQuestion: { type: String, default: "" },
-    quizOptions: [{ type: String }], 
-    correctAnswer: { type: String, default: "" }, 
-
-    createdBy: {
-      type: String,
-      default: "admin",
-    },
+const skillSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
   },
-  { timestamps: true }
-);
+  description: String,
+
+  // ✅ NEW FIELD
+  topics: [
+    {
+      type: String,
+    },
+  ],
+});
 
 module.exports = mongoose.model("Skill", skillSchema);
