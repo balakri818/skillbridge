@@ -12,8 +12,9 @@ function Navbar() {
   return (
     <header className="bg-white border-b shadow-sm">
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-        <Link to="/" className="text-2xl font-bold text-blue-600">
-          SkillBridge
+        <Link to="/" className="text-2xl font-bold text-blue-600 flex items-center gap-3">
+          <img src="/logo.png" alt="SkillBridge Logo" className="w-9 h-9 rounded-md drop-shadow-sm" />
+          <span>SkillBridge</span>
         </Link>
 
         <nav className="flex items-center space-x-6">

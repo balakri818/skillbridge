@@ -15,6 +15,10 @@ const enrollmentSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  completedTopics: {
+    type: [Number],
+    default: []
+  }
 });
 
 module.exports = mongoose.model("Enrollment", enrollmentSchema);

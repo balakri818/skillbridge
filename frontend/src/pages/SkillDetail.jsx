@@ -8,6 +8,7 @@ function SkillDetail() {
   const [skill, setSkill] = useState(null);
   const [progress, setProgress] = useState(0);
   const [isEnrolled, setIsEnrolled] = useState(false);
+  const [completedTopics, setCompletedTopics] = useState([]);
   const [expandedTopic, setExpandedTopic] = useState(null);
 
   const topicLinks = {
@@ -77,6 +78,7 @@ function SkillDetail() {
         if (enrollment) {
           setIsEnrolled(true);
           setProgress(enrollment.progress || 0);
+          setCompletedTopics(enrollment.completedTopics || []);
         }
       }
     } catch (err) {
@@ -113,14 +115,21 @@ function SkillDetail() {
     }
   };
 
-  const handleComplete = async () => {
+  const handleComplete = async (topicIndex) => {
     if (!isEnrolled) {
       alert("Please enroll first!");
       return;
     }
+    
+    if (completedTopics.includes(topicIndex)) {
+      return;
+    }
+
     const step = Math.ceil(100 / (skill.topics?.length || 4));
     const newProgress = Math.min(progress + step, 100);
+    
     setProgress(newProgress);
+    setCompletedTopics([...completedTopics, topicIndex]);
     
     try {
       const token = localStorage.getItem("token");
@@ -130,7 +139,7 @@ function SkillDetail() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ skillPathId: skill._id, progress: newProgress })
+        body: JSON.stringify({ skillPathId: skill._id, progress: newProgress, completedTopicIndex: topicIndex })
       });
     } catch (err) {
       console.error(err);
@@ -220,19 +229,26 @@ function SkillDetail() {
                     </li>
                   </ul>
 
-                  {isEnrolled && progress < 100 ? (
-                    <button
-                      onClick={(e) => { 
-                        e.stopPropagation(); 
-                        handleComplete(); 
-                      }}
-                      className="bg-green-500 text-white font-medium px-5 py-2 rounded-lg hover:bg-green-600 transition shadow-sm w-fit"
-                    >
-                      Mark as Completed
-                    </button>
-                  ) : !isEnrolled ? (
+                  {isEnrolled ? (
+                    completedTopics.includes(i) ? (
+                      <div className="bg-green-100 text-green-800 font-bold px-4 py-2 rounded-lg w-fit">
+                        Topic Completed ✅
+                      </div>
+                    ) : (
+                      <button
+                        onClick={(e) => { 
+                          e.stopPropagation(); 
+                          handleComplete(i); 
+                          toggleTopic(null); // Close topic on completion
+                        }}
+                        className="bg-green-500 text-white font-medium px-5 py-2 rounded-lg hover:bg-green-600 transition shadow-sm w-fit"
+                      >
+                        Mark as Completed
+                      </button>
+                    )
+                  ) : (
                     <p className="text-sm text-red-500 italic">Please enroll to track your progress.</p>
-                  ) : null}
+                  )}
                 </div>
               )}
             </div>

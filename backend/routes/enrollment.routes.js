@@ -53,7 +53,7 @@ router.get("/my", authMiddleware, async (req, res) => {
 // Update progress
 router.put("/progress", authMiddleware, async (req, res) => {
   try {
-    const { skillPathId, progress } = req.body;
+    const { skillPathId, progress, completedTopicIndex } = req.body;
 
     if (!skillPathId || progress === undefined) {
       return res.status(400).json({ message: "Skill ID and progress required" });
@@ -69,6 +69,10 @@ router.put("/progress", authMiddleware, async (req, res) => {
     }
 
     enrollment.progress = progress;
+    if (completedTopicIndex !== undefined && !enrollment.completedTopics.includes(completedTopicIndex)) {
+      enrollment.completedTopics.push(completedTopicIndex);
+    }
+
     await enrollment.save();
 
     res.json({ message: "Progress updated successfully", enrollment });
