@@ -1,23 +1,14 @@
 const mongoose = require("mongoose");
 
-const skillPathSchema = new mongoose.Schema(
-  {
-    title: {
-      type: String,
-      required: true,
+const skillSchema = new mongoose.Schema({
+  title: String,
+  description: String,
+  topics: [
+    {
+      name: String,
+      content: String,
     },
-    description: {
-      type: String,
-      required: true,
-    },
-    skills: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Skill",
-      },
-    ],
-  },
-  { timestamps: true }
-);
+  ],
+});
 
-module.exports = mongoose.model("SkillPath", skillPathSchema);
+module.exports = mongoose.model("Skill", skillSchema);
