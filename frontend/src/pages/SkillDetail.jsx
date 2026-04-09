@@ -10,6 +10,45 @@ function SkillDetail() {
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [expandedTopic, setExpandedTopic] = useState(null);
 
+  const topicLinks = {
+    // DSA
+    "Time & Space Complexity": "https://www.geeksforgeeks.org/time-complexity-and-space-complexity/",
+    "Arrays & Strings": "https://www.geeksforgeeks.org/array-data-structure/",
+    "Linked Lists & Trees": "https://www.geeksforgeeks.org/data-structures/linked-list/",
+    "Dynamic Programming": "https://www.geeksforgeeks.org/dynamic-programming/",
+
+    // DBMS
+    "Entity-Relationship Model": "https://www.geeksforgeeks.org/introduction-of-er-model/",
+    "SQL Constraints & Queries": "https://www.geeksforgeeks.org/sql-ddl-dql-dml-dcl-tcl-commands/",
+    "Normalization": "https://www.geeksforgeeks.org/introduction-of-database-normalization/",
+    "Transaction Management": "https://www.geeksforgeeks.org/transaction-management-in-dbms/",
+
+    // Full-Stack
+    "Frontend Frameworks": "https://www.geeksforgeeks.org/react-tutorial/",
+    "Backend APIs": "https://www.geeksforgeeks.org/express-js/",
+    "Authentication Middleware": "https://www.geeksforgeeks.org/json-web-token-jwt/",
+    "Database Integration": "https://www.geeksforgeeks.org/mongoose-tutorial/",
+
+    // OS
+    "Process & Threads": "https://www.geeksforgeeks.org/difference-between-process-and-thread/",
+    "CPU Scheduling Algorithms": "https://www.geeksforgeeks.org/cpu-scheduling-in-operating-systems/",
+    "Memory Management": "https://www.geeksforgeeks.org/memory-management-in-operating-system/",
+    "Deadlocks": "https://www.geeksforgeeks.org/introduction-of-deadlock-in-operating-system/",
+
+    // ML
+    "Linear Regression": "https://www.geeksforgeeks.org/ml-linear-regression/",
+    "Classification": "https://www.geeksforgeeks.org/getting-started-with-classification/",
+    "Clustering Algorithms": "https://www.geeksforgeeks.org/clustering-in-machine-learning/",
+    "Neural Networks Overview": "https://www.geeksforgeeks.org/neural-networks-a-beginners-guide/"
+  };
+
+  const getGfgArticleLink = (topicName) => {
+    if (topicLinks[topicName]) return topicLinks[topicName];
+    // Fallback: build a slug-based URL
+    const slug = topicName.toLowerCase().replace(/ & /g, "-and-").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+    return `https://www.geeksforgeeks.org/${slug}/`;
+  };
+
   const toggleTopic = (index) => {
     setExpandedTopic(expandedTopic === index ? null : index);
   };
@@ -159,9 +198,26 @@ function SkillDetail() {
 
                   <h4 className="font-semibold text-gray-800 mb-2">Recommended Resources</h4>
                   <ul className="list-disc list-inside text-sm text-blue-600 mb-6 space-y-1">
-                    <li><a href="#" className="hover:underline">Video Tutorial: Guide to {t.name}</a></li>
-                    <li><a href="#" className="hover:underline">Documentation & In-Depth Articles</a></li>
-                    <li><a href="#" className="hover:underline">Practice Exercises on {t.name}</a></li>
+                    <li>
+                      <a 
+                        href={getGfgArticleLink(t.name)}
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="hover:underline"
+                      >
+                        GeeksforGeeks: Articles & Tutorials on {t.name}
+                      </a>
+                    </li>
+                    <li>
+                      <a 
+                        href={`https://practice.geeksforgeeks.org/explore?page=1&search=${encodeURIComponent(t.name)}`}
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="hover:underline"
+                      >
+                        GeeksforGeeks: Practice Exercises for {t.name}
+                      </a>
+                    </li>
                   </ul>
 
                   {isEnrolled && progress < 100 ? (
