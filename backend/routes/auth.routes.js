@@ -8,6 +8,18 @@ router.post("/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
+    // Robust validation
+    if (!name || name.trim() === "") {
+      return res.status(400).json({ message: "Name is required" });
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
+      return res.status(400).json({ message: "Valid email is required" });
+    }
+    if (!password || password.length < 6) {
+      return res.status(400).json({ message: "Password must be at least 6 characters long" });
+    }
+
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });

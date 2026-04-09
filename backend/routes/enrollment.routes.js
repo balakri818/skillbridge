@@ -50,4 +50,32 @@ router.get("/my", authMiddleware, async (req, res) => {
   }
 });
 
+// Update progress
+router.put("/progress", authMiddleware, async (req, res) => {
+  try {
+    const { skillPathId, progress } = req.body;
+
+    if (!skillPathId || progress === undefined) {
+      return res.status(400).json({ message: "Skill ID and progress required" });
+    }
+
+    const enrollment = await Enrollment.findOne({
+      user: req.user.id,
+      skillPath: skillPathId,
+    });
+
+    if (!enrollment) {
+      return res.status(404).json({ message: "Enrollment not found" });
+    }
+
+    enrollment.progress = progress;
+    await enrollment.save();
+
+    res.json({ message: "Progress updated successfully", enrollment });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to update progress" });
+  }
+});
+
 module.exports = router;

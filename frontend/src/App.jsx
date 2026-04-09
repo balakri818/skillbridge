@@ -6,6 +6,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/StudentDashboard";
 import Skills from "./pages/Skills";
 import MyEnrollments from "./pages/MyEnrollments";
+import SkillDetail from "./pages/SkillDetail";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -41,6 +42,15 @@ function App() {
           element={
             <ProtectedRoute>
               <MyEnrollments />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/skill"
+          element={
+            <ProtectedRoute>
+              <SkillDetail />
             </ProtectedRoute>
           }
         />

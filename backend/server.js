@@ -13,10 +13,12 @@ app.use(express.json());
 // Routes
 const authRoutes = require("./routes/auth.routes");
 const skillRoutes = require("./routes/skill.routes");
+const skillPathRoutes = require("./routes/skillPath.routes");
 const enrollmentRoutes = require("./routes/enrollment.routes");
 
 app.use("/api/auth", authRoutes);
 app.use("/api/skills", skillRoutes);
+app.use("/api/skill-paths", skillPathRoutes);
 app.use("/api/enrollments", enrollmentRoutes);
 
 // Test route

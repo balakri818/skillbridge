@@ -10,7 +10,8 @@ const skillSchema = new mongoose.Schema({
   // ✅ NEW FIELD
   topics: [
     {
-      type: String,
+      name: String,
+      content: String,
     },
   ],
 });
