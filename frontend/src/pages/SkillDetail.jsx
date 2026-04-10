@@ -8,7 +8,47 @@ function SkillDetail() {
   const [skill, setSkill] = useState(null);
   const [progress, setProgress] = useState(0);
   const [isEnrolled, setIsEnrolled] = useState(false);
+  const [completedTopics, setCompletedTopics] = useState([]);
   const [expandedTopic, setExpandedTopic] = useState(null);
+
+  const topicLinks = {
+    // DSA
+    "Time & Space Complexity": "https://www.geeksforgeeks.org/time-complexity-and-space-complexity/",
+    "Arrays & Strings": "https://www.geeksforgeeks.org/array-data-structure/",
+    "Linked Lists & Trees": "https://www.geeksforgeeks.org/data-structures/linked-list/",
+    "Dynamic Programming": "https://www.geeksforgeeks.org/dynamic-programming/",
+
+    // DBMS
+    "Entity-Relationship Model": "https://www.geeksforgeeks.org/introduction-of-er-model/",
+    "SQL Constraints & Queries": "https://www.geeksforgeeks.org/sql-ddl-dql-dml-dcl-tcl-commands/",
+    "Normalization": "https://www.geeksforgeeks.org/introduction-of-database-normalization/",
+    "Transaction Management": "https://www.geeksforgeeks.org/transaction-management-in-dbms/",
+
+    // Full-Stack
+    "Frontend Frameworks": "https://www.geeksforgeeks.org/react-tutorial/",
+    "Backend APIs": "https://www.geeksforgeeks.org/express-js/",
+    "Authentication Middleware": "https://www.geeksforgeeks.org/json-web-token-jwt/",
+    "Database Integration": "https://www.geeksforgeeks.org/mongoose-tutorial/",
+
+    // OS
+    "Process & Threads": "https://www.geeksforgeeks.org/difference-between-process-and-thread/",
+    "CPU Scheduling Algorithms": "https://www.geeksforgeeks.org/cpu-scheduling-in-operating-systems/",
+    "Memory Management": "https://www.geeksforgeeks.org/memory-management-in-operating-system/",
+    "Deadlocks": "https://www.geeksforgeeks.org/introduction-of-deadlock-in-operating-system/",
+
+    // ML
+    "Linear Regression": "https://www.geeksforgeeks.org/ml-linear-regression/",
+    "Classification": "https://www.geeksforgeeks.org/getting-started-with-classification/",
+    "Clustering Algorithms": "https://www.geeksforgeeks.org/clustering-in-machine-learning/",
+    "Neural Networks Overview": "https://www.geeksforgeeks.org/neural-networks-a-beginners-guide/"
+  };
+
+  const getGfgArticleLink = (topicName) => {
+    if (topicLinks[topicName]) return topicLinks[topicName];
+    // Fallback: build a slug-based URL
+    const slug = topicName.toLowerCase().replace(/ & /g, "-and-").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+    return `https://www.geeksforgeeks.org/${slug}/`;
+  };
 
   const toggleTopic = (index) => {
     setExpandedTopic(expandedTopic === index ? null : index);
@@ -38,6 +78,7 @@ function SkillDetail() {
         if (enrollment) {
           setIsEnrolled(true);
           setProgress(enrollment.progress || 0);
+          setCompletedTopics(enrollment.completedTopics || []);
         }
       }
     } catch (err) {
@@ -74,14 +115,21 @@ function SkillDetail() {
     }
   };
 
-  const handleComplete = async () => {
+  const handleComplete = async (topicIndex) => {
     if (!isEnrolled) {
       alert("Please enroll first!");
       return;
     }
+    
+    if (completedTopics.includes(topicIndex)) {
+      return;
+    }
+
     const step = Math.ceil(100 / (skill.topics?.length || 4));
     const newProgress = Math.min(progress + step, 100);
+    
     setProgress(newProgress);
+    setCompletedTopics([...completedTopics, topicIndex]);
     
     try {
       const token = localStorage.getItem("token");
@@ -91,7 +139,7 @@ function SkillDetail() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ skillPathId: skill._id, progress: newProgress })
+        body: JSON.stringify({ skillPathId: skill._id, progress: newProgress, completedTopicIndex: topicIndex })
       });
     } catch (err) {
       console.error(err);
@@ -159,24 +207,48 @@ function SkillDetail() {
 
                   <h4 className="font-semibold text-gray-800 mb-2">Recommended Resources</h4>
                   <ul className="list-disc list-inside text-sm text-blue-600 mb-6 space-y-1">
-                    <li><a href="#" className="hover:underline">Video Tutorial: Guide to {t.name}</a></li>
-                    <li><a href="#" className="hover:underline">Documentation & In-Depth Articles</a></li>
-                    <li><a href="#" className="hover:underline">Practice Exercises on {t.name}</a></li>
+                    <li>
+                      <a 
+                        href={getGfgArticleLink(t.name)}
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="hover:underline"
+                      >
+                        GeeksforGeeks: Articles & Tutorials on {t.name}
+                      </a>
+                    </li>
+                    <li>
+                      <a 
+                        href={`https://practice.geeksforgeeks.org/explore?page=1&search=${encodeURIComponent(t.name)}`}
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="hover:underline"
+                      >
+                        GeeksforGeeks: Practice Exercises for {t.name}
+                      </a>
+                    </li>
                   </ul>
 
-                  {isEnrolled && progress < 100 ? (
-                    <button
-                      onClick={(e) => { 
-                        e.stopPropagation(); 
-                        handleComplete(); 
-                      }}
-                      className="bg-green-500 text-white font-medium px-5 py-2 rounded-lg hover:bg-green-600 transition shadow-sm w-fit"
-                    >
-                      Mark as Completed
-                    </button>
-                  ) : !isEnrolled ? (
+                  {isEnrolled ? (
+                    completedTopics.includes(i) ? (
+                      <div className="bg-green-100 text-green-800 font-bold px-4 py-2 rounded-lg w-fit">
+                        Topic Completed ✅
+                      </div>
+                    ) : (
+                      <button
+                        onClick={(e) => { 
+                          e.stopPropagation(); 
+                          handleComplete(i); 
+                          toggleTopic(null); // Close topic on completion
+                        }}
+                        className="bg-green-500 text-white font-medium px-5 py-2 rounded-lg hover:bg-green-600 transition shadow-sm w-fit"
+                      >
+                        Mark as Completed
+                      </button>
+                    )
+                  ) : (
                     <p className="text-sm text-red-500 italic">Please enroll to track your progress.</p>
-                  ) : null}
+                  )}
                 </div>
               )}
             </div>
